@@ -1,0 +1,156 @@
+[Im, MAP]=imread('woman2.bmp');
+MAP (end:255, :)=0;
+figure(1) ;
+imshow (Im, MAP) ;
+title('原始图像');
+figure (2)
+imhist (Im, MAP );
+axis([0 255 0 5000]) ;
+title('woman2直方图 ');
+
+
+[Im, MAP] =imread('woman2.bmp') ;
+MAP (end:255, :)=0;
+figure(1);
+imshow (Im, MAP) ; 
+title ('woman2原始图像');
+imwrite (Im, MAP, 'woman2原始图像.bmp');
+figure (2)
+GP=zeros(1,256);
+IM=ind2gray (Im, MAP) ;
+[m, n]=size (IM) ;
+for k=0:255  
+GP(k+1)=length(find (IM==k))/ (m*n) ;
+end
+bar (0:255,GP) ;
+axis([0 256 0 0.05]) ;
+title ('woman2原始图像直方图');
+xlabel('灰度值');
+ylabel ('像素的概率密度');
+figure(3) ;
+J=histeq(Im) ;
+imshow (J,MAP) ;
+title('woman2直方图均衡结果');
+imwrite (J,MAP, 'woman2直方图均衡结果.bmp');
+figure(4) ;
+GP=zeros(1, 256);
+IM=ind2gray (J,MAP) ;
+[m, n]=size (IM);
+for k=0:255  
+GP(k+1)=length(find (IM==k))/ (m*n) ;
+end  %绘制原图直方图
+bar(0:255,GP) ;
+axis([0 256 0 0.05]);
+title ('woman2均衡化后的直方图');
+xlabel('灰度值');
+ylabel ('像素的概率密度');
+
+
+
+[IM,MAP]=imread( 'woman2.bmp') ;
+MAP (end:255,:)=0;
+I=ind2gray (IM, MAP) ;
+[IM2,MAP2] =imread ('woman.BMP') ;
+I2=ind2gray(IM2,MAP2);
+hsp=imhist(I2,256);
+g=histeq(I,hsp);
+figure;
+subplot(1,2,1);
+imshow (IM,MAP) ;
+imwrite (IM,MAP, 'woman2原图.bmp');
+title('woman2.bmp原图');
+subplot(1,2,2);
+imshow (g,MAP2);
+imwrite(g,MAP2, 'woman2直方图四配增强后的图像.bmp');
+title('直方图匹配增强后的图像');
+figure;
+subplot(3,1,1);
+imhist (I, MAP) ;
+axis([0 256 0 100000]) ;
+title('原图woman2.bmp的直方图');
+subplot(3, 1,2) ;
+imhist (I2, MAP2) ;
+axis([0 256 0 100000]) ;
+title (strcat ('匹配图woman.BMP的直方图')) ;
+subplot(3,1,3) ;
+imhist (g, MAP) ;
+axis([0 256 0 100000]) ;
+title('增强后图像直方图');
+
+
+
+[data1, count1] = imread('elain.bmp');
+subplot(2,2,1)
+imshow(data1),title('elain');
+mdata1=zeros(518,518);
+mdata1(4:515,4:515)=data1;
+for i=4:515
+	   for j=4:515
+	       jdata1=mdata1(i-3:i+3,j-3:j+3);
+	       jdataj1=histeq(uint8(jdata1));
+	        data1(i-3,j-3)=jdataj1(4,4);
+	    end
+	end
+	subplot(2,2,2)
+	imshow(data1),title('elain-j');
+	[data2, count2] = imread('lena.bmp');
+	subplot(2,2,3)
+	imshow(data2),title('lena');
+	mdata2=zeros(518,518);
+	mdata2(4:515,4:515)=data2;
+	for i=4:515
+	    for j=4:515
+	        jdata2=mdata2(i-3:i+3,j-3:j+3);
+	        jdataj2=histeq(uint8(jdata2));
+	        data2(i-3,j-3)=jdataj2(4,4);
+	    end
+	end
+	subplot(2,2,4)
+	imshow(data2),title('lena-j');
+
+
+
+
+
+
+
+
+
+
+
+
+I=imread( 'woman.BMP') ;
+figure(1) ;
+imhist(I) ;
+title('woman的直方图');
+figure(2) ;
+subplot(1,2,1) ;
+imshow(I) ;
+title('woman原始图像') ;
+t1 =80;
+[m,n]=size(I) ;
+I1=zeros (m,n) ;
+for i=1:m
+for j=1:n
+if I(i,j)>t1
+I1 (i,j)=1;
+else
+I1 (i,j)=0;
+end
+end
+end
+subplot(1,2,2);
+imshow(I1) ;
+title('分割后的woman.bmp') ;
+clc
+clear all
+I= imread( 'woman.BMP') ;
+figure(3) ;
+subplot(1,2,1);
+imshow(I) ;
+title( 'woman原始图像') ;
+level=graythresh(I);
+BW=im2bw(I, level) ;
+subplot(1,2,2) ;
+imshow (BW) ; 
+title('otsu法阙值分割图像');
